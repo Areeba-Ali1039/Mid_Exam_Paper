@@ -1,42 +1,39 @@
 🏥 Hospital Emergency Queue Management System (Doubly Linked List)
-
 📘 Project Overview
-This project represents a Hospital Emergency Queue Management System developed in C++, utilizing a Doubly Linked List.
-It manages patients in the emergency room by their priority level, ensuring that critical patients receive treatment before regular ones.
-The program efficiently performs insertions and deletions from any point in the queue, maintaining an organized and real-time patient flow.
+
+This project models a Hospital Emergency Room (ER) Queue System using a Doubly Linked List in C++.
+It manages patients according to their treatment priority, giving preference to critical cases while allowing normal patients to wait in sequence.
+The system supports quick insertion and deletion of patients at the beginning, end, or at any specific position in the queue, ensuring smooth and efficient hospital operations.
 
 🎯 Features / Operations
-
 Function	Description
-🩺 insertAtBeginning(patientID)	Adds a critical patient to the start of the list.
-🚶 insertAtEnd(patientID)	Adds a regular patient to the end of the list.
-⚖️ insertAtPosition(patientID, position)	Inserts a patient at a specific position based on urgency.
-🏁 deleteFromBeginning()	Removes the first patient after successful treatment.
+🩺 InsertAtBeginning(patientID)	Adds a critical patient to the front of the queue for immediate treatment.
+🚶 InsertAtEnd(patientID)	Adds a regular patient to the end of the list who can wait for their turn.
+⚖️ InsertAtPosition(patientID, position)	Inserts a patient at a specific priority-based position within the list.
+🏁 DeleteFromBeginning()	Removes the first patient after successful treatment.
 
 ⚙️ Data Structure Used
-The system is built on a Doubly Linked List, where every node consists of:
+The system is implemented using a Doubly Linked List, where each node contains:
 
-🔢 patientID – Unique identification number for each patient.
+🔢 patientID — Unique ID assigned to each patient
 
-⬅️ prev – Points to the previous patient in the list.
+⬅️ prev — Pointer to the previous patient
 
-➡️ next – Points to the next patient in the list.
+➡️ next — Pointer to the next patient
 
-This allows two-way traversal and makes the process of adding or removing patients smooth and efficient.
+This structure enables two-way traversal and allows the system to update the queue efficiently as patients are added or removed.
 
 🧩 Dry Run / Step-by-Step Example
+Starting with an empty emergency list, the following operations are performed step by step:
 
-Operations performed from an empty list:
+1️⃣ InsertAtEnd(101)
+2️⃣ InsertAtEnd(102)
+3️⃣ InsertAtBeginning(200) (Critical patient)
+4️⃣ InsertAtPosition(150, 2)
+5️⃣ DeleteFromBeginning()
+6️⃣ InsertAtEnd(300)
 
-1️⃣ insertAtEnd(101)
-2️⃣ insertAtEnd(102)
-3️⃣ insertAtBeginning(200) (Critical patient)
-4️⃣ insertAtPosition(150, 2)
-5️⃣ deleteFromBeginning()
-6️⃣ insertAtEnd(300)
-
-✅ Final Output:
-
+✅ Final Output
 Property	Value
 Head	150
 Tail	300
@@ -44,28 +41,26 @@ Forward Traversal	150 → 101 → 102 → 300
 Backward Traversal	300 → 102 → 101 → 150
 
 🧠 Working Methodology
+Initialize an empty queue for ER patients.
 
-Start with an empty list.
+Add patients according to their urgency level (critical or normal).
 
-Add patients depending on their priority level (critical or normal).
+Continuously update head, tail, prev, and next pointers after each modification.
 
-Continuously update head, tail, prev, and next pointers with every insertion or deletion.
+Once treated, remove the patient at the front of the queue.
 
-Remove patients from the beginning after treatment.
+Maintain proper linkage to avoid broken connections between nodes.
 
-Maintain a properly linked structure to avoid data loss or corruption.
-
-The process continues dynamically as new patients arrive in the ER.
+Keep processing dynamically as new patients arrive or are discharged.
 
 💻 Technologies Used
-
 Component	Description
-💬 Programming Language	C++
-🧱 Core Concept	Doubly Linked List
+💬 Language	C++
+🧱 Data Structure	Doubly Linked List
 
 📚 Conclusion
-This project highlights how Doubly Linked Lists can be applied to manage real-life hospital emergency queues.
-It ensures a priority-based, fair, and systematic treatment process while maintaining efficiency in patient flow management.
+This project showcases the practical use of a Doubly Linked List for managing an emergency room queue system.
+It ensures priority-based treatment, supports real-time updates, and maintains an organized and efficient patient flow — making it suitable for real-world hospital management systems.
 
 👩‍💻 Author
 Name: Areeba
