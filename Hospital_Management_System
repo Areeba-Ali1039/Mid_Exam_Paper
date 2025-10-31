@@ -1,0 +1,189 @@
+#include <iostream>
+using namespace std;
+
+struct PatientNode {
+    int patientId;       
+    PatientNode* prev;    
+    PatientNode* next;  
+
+    PatientNode(int id) {
+        patientId = id;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class ERQueue {
+private:
+    PatientNode* front;   // First patient in the queue (critical)
+    PatientNode* back;    // Last patient in the queue (normal)
+    int patientCount;     // Total number of patients in queue
+
+public:
+    ERQueue() {
+        front = nullptr;
+        back = nullptr;
+        patientCount = 0;
+    }
+
+    ~ERQueue() {
+        clearQueue();
+    }
+    
+    void clearQueue() {
+        while (front != nullptr) {
+            DeleteFromBegining();
+        }
+    }
+
+    void InsertAtBegning(int patientId) {
+        PatientNode* newPatient = new PatientNode(patientId);
+
+        if (front == nullptr) {
+            front = back = newPatient;
+        } else {
+            newPatient->next = front;
+            front->prev = newPatient;
+            front = newPatient;
+        }
+        patientCount++;
+        cout << "Critical patient " << patientId << " added to the front of the queue." << endl;
+    }
+
+    void InsertAtEnd(int patientId) {
+        PatientNode* newPatient = new PatientNode(patientId);
+
+        if (back == nullptr) {
+            front = back = newPatient;
+        } else {
+            back->next = newPatient;
+            newPatient->prev = back;
+            back = newPatient;
+        }
+        patientCount++;
+        cout << "Normal patient " << patientId << " added to the end of the queue." << endl;
+    }
+
+    void InsertAtPosition(int patientId, int position) {
+        if (position <= 1) {
+            InsertAtBegning(patientId);
+            return;
+        }
+
+        if (position > patientCount) {
+            InsertAtEnd(patientId);
+            return;
+        }
+
+        PatientNode* newPatient = new PatientNode(patientId);
+        PatientNode* current = front;
+        int currentPosition = 1;
+        while (current != nullptr && currentPosition < position - 1) {
+            current = current->next;
+            currentPosition++;
+        }
+        newPatient->next = current->next;
+        newPatient->prev = current;
+
+        if (current->next != nullptr) {
+            current->next->prev = newPatient;
+        } else {
+            back = newPatient; 
+        }
+
+        current->next = newPatient;
+        patientCount++;
+        cout << "Patient " << patientId << " inserted at position " << position << "." << endl;
+    }
+
+    void DeleteFromBegining() {
+        if (front == nullptr) {
+            cout << "Queue is empty. No patients to treat." << endl;
+            return;
+        }
+
+        PatientNode* patientToTreat = front;
+        int treatedId = patientToTreat->patientId;
+
+        if (front == back) {
+            front = back = nullptr;
+        } else {
+            front = front->next;
+            if (front) front->prev = nullptr;
+        }
+
+        delete patientToTreat;
+        patientCount--;
+        cout << "Patient " << treatedId << " has been treated and removed from the queue." << endl;
+    }
+    void displayQueue() {
+        if (front == nullptr) {
+            cout << "Queue is empty." << endl;
+            return;
+        }
+
+        PatientNode* current = front;
+        cout << "FRONT -> ";
+        while (current != nullptr) {
+            cout << "[" << current->patientId << "]";
+            if (current->next != nullptr) cout << " <-> ";
+            current = current->next;
+        }
+        cout << " <- BACK" << endl;
+    }
+    void displayReverseQueue() {
+        if (back == nullptr) {
+            cout << "Queue is empty." << endl;
+            return;
+        }
+
+        PatientNode* current = back;
+        cout << "BACK -> ";
+        while (current != nullptr) {
+            cout << "[" << current->patientId << "]";
+            if (current->prev != nullptr) cout << " <-> ";
+            current = current->prev;
+        }
+        cout << " <- FRONT" << endl;
+}
+    void displayStatus() {
+        cout << "\n=== Emergency Room Queue Status ===" << endl;
+        cout << "First Patient: ";
+        if (front) cout << front->patientId << endl; 
+        else cout << "None" << endl;
+
+        cout << "Last Patient: ";
+        if (back) cout << back->patientId << endl; 
+        else cout << "None" << endl;
+
+        cout << "Total Patients: " << patientCount << endl;
+        cout << "====================================" << endl;
+    }
+
+    int getPatientCount() const {
+        return patientCount;
+    }
+};
+int main() {
+    ERQueue emergencyRoom;
+
+    cout << "=== Emergency Room Queue Management System ===" << endl;
+    
+    emergencyRoom.InsertAtEnd(101);       
+    emergencyRoom.InsertAtEnd(102);      
+    
+    emergencyRoom.InsertAtBegning(200);     
+    
+    emergencyRoom.InsertAtPosition(150, 2);    
+    
+    emergencyRoom.DeleteFromBegining();             
+    
+    emergencyRoom.InsertAtEnd(300);      
+
+    cout << "\nAfter operations:" << endl;
+    emergencyRoom.displayQueue();
+    emergencyRoom.displayReverseQueue();
+    emergencyRoom.displayStatus();
+
+    return 0;
+}
